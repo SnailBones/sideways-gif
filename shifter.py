@@ -1,7 +1,17 @@
+
+#
+# This code turns GIFs sideways in time!
+#
+# It makes use of the images2gif module by Almar Klein, Ant1, and Marius van Voorden
+#
+# If you use/modify it, please credit me and show me what you create!
+#
+# SnailBones (A. Hendrickson) 2016
+#
+
+
 from PIL import Image, ImageSequence
 import sys, os
-# import moviepy.editor as mpy
-import imageio
 import numpy as np
 from images2gif import writeGif
 
@@ -9,21 +19,19 @@ def select():
     if (len(sys.argv) > 1):
         name = sys.argv[1]
     else:
-        name = "dolphin"
+        name = "dolphin.gif"
     return name
 
 def clearDir(dir):
     for f in os.listdir(dir):
         os.remove(dir + "/" + f)
 
-def extractFrames(name, outFolder):
-    frame = Image.open("gifs/"+name+".gif")
+def extractFrames(name):
+    frame = Image.open(name)
     nframes = 0
-    clearDir(outFolder)
     frames = []
     while frame:
         fr = frame.copy().convert('RGB')
-        fr.save( '%s/%s.%s.gif' % (outFolder, name, nframes ) , 'GIF')
         # if nframes == 0:
         #     palette = fr.getpalette()
         # else:
@@ -37,7 +45,7 @@ def extractFrames(name, outFolder):
     return frames
 
 
-def switchDimensions(old_frames, outFolder, myName = 'frame'):
+def switchDimensions(old_frames, myName):
     length = len(old_frames)
     new_frames = []
     width, height = old_frames[0].size
@@ -51,7 +59,7 @@ def switchDimensions(old_frames, outFolder, myName = 'frame'):
                 new_img.putpixel((c,i), pix)
         new_frames.append(new_img)
 
-    name = myName + '.gif'
+    name = 'twisted-' + myName
     writeGif(name, new_frames, dither=0)
     print ("saved gif with name %s" % name)
     return new_frames
@@ -64,7 +72,5 @@ def saveAsIms (frames, dir, name = "frame"): #testing method, save the array as 
 
 
 name = select()
-frames = extractFrames(name, 'frames')
-switchDimensions(frames,'new_frames', name)
-
-#rebuildImageIo('new_frames', name)
+frames = extractFrames(name)
+switchDimensions(frames, name)
