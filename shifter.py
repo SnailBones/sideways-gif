@@ -19,7 +19,7 @@ def select():
     if (len(sys.argv) > 1):
         name = sys.argv[1]
     else:
-        name = "dolphin.gif"
+        name = "pizzadog.gif"
     return name
 
 def clearDir(dir):
